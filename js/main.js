@@ -1,9 +1,3 @@
-// main.js
-import { hero } from "./hero.js";
-import { generateHomeMap, generateDungeonMap } from "./mapgen.js";
-import { checkHomeInteraction } from "./stage/home.js";
-import { showReturnHomePopup } from "./ui/popup_return.js";
-
 window.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("stage");
   const ctx = canvas.getContext("2d");
@@ -13,20 +7,19 @@ window.addEventListener("DOMContentLoaded", () => {
 
   let currentStage = "home";
   let dungeonLayer = 1;
-  let map = generateHomeMap();
-  let heroPos = { x: 1, y: 1 };
+  let map = window.generateHomeMap();
+  let heroPos = window.heroPos;
 
-  // 画像読み込み
-  const assets = ["Ground", "Hero", "Bed", "GoddessStatue", "UphillStairs", "DownhillStairs"];
-  const images = {};
+  const groundImg = new Image(); groundImg.src = "assets/Ground.png";
+  const heroImg = new Image(); heroImg.src = "assets/Hero.png";
+  const bedImg = new Image(); bedImg.src = "assets/Bed.png";
+  const goddessImg = new Image(); goddessImg.src = "assets/GoddessStatue.png";
+  const upStairsImg = new Image(); upStairsImg.src = "assets/UphillStairs.png";
+  const downStairsImg = new Image(); downStairsImg.src = "assets/DownhillStairs.png";
+
   let loadedCount = 0;
-  function checkAndDraw() { loadedCount++; if (loadedCount === assets.length) drawMap(); }
-
-  assets.forEach(name => {
-    images[name] = new Image();
-    images[name].src = `assets/${name}.png`;
-    images[name].onload = checkAndDraw;
-  });
+  function checkAndDraw() { loadedCount++; if (loadedCount === 6) drawMap(); }
+  groundImg.onload = heroImg.onload = bedImg.onload = goddessImg.onload = upStairsImg.onload = downStairsImg.onload = checkAndDraw;
 
   function drawMap() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -38,45 +31,29 @@ window.addEventListener("DOMContentLoaded", () => {
       for (let x = 0; x < map[0].length; x++) {
         const tile = map[y][x];
         const px = x * tileSize, py = y * tileSize;
-        switch(tile){
-          case 0: ctx.drawImage(images.Ground, px, py, tileSize, tileSize); break;
-          case 1: ctx.fillStyle = "#555"; ctx.fillRect(px, py, tileSize, tileSize); break;
-          case 2: ctx.drawImage(images.UphillStairs, px, py, tileSize, tileSize); break;
-          case 3: ctx.drawImage(images.DownhillStairs, px, py, tileSize, tileSize); break;
-          case 4: ctx.drawImage(images.Bed, px, py, tileSize, tileSize); break;
-          case 5: ctx.drawImage(images.GoddessStatue, px, py, tileSize, tileSize); break;
-        }
+        if (tile === 0) ctx.drawImage(groundImg, px, py, tileSize, tileSize);
+        else if (tile === 1) ctx.fillStyle = "#555", ctx.fillRect(px, py, tileSize, tileSize);
+        else if (tile === 2) ctx.drawImage(upStairsImg, px, py, tileSize, tileSize);
+        else if (tile === 3) ctx.drawImage(downStairsImg, px, py, tileSize, tileSize);
+        else if (tile === 4) ctx.drawImage(bedImg, px, py, tileSize, tileSize);
+        else if (tile === 5) ctx.drawImage(goddessImg, px, py, tileSize, tileSize);
       }
     }
 
-    ctx.drawImage(images.Hero, heroPos.x * tileSize, heroPos.y * tileSize, tileSize, tileSize);
-    updateStatusDisplay();
+    ctx.drawImage(heroImg, heroPos.x * tileSize, heroPos.y * tileSize, tileSize, tileSize);
+    window.updateStatusDisplay(window.hero);
   }
 
-  function updateStatusDisplay() {
-    const container = document.getElementById("left");
-    container.querySelectorAll(".stat").forEach(div => {
-      const label = div.querySelector("span:first-child").textContent;
-      const valueSpan = div.querySelector("span:last-child");
-      switch (label) {
-        case "HP": valueSpan.textContent = `${hero.hp} / ${hero.maxHp}`; break;
-        case "ATK": valueSpan.textContent = hero.confirmedStats.atk ?? hero.atk; break;
-        case "DEF": valueSpan.textContent = hero.confirmedStats.def ?? hero.def; break;
-        case "SPD": valueSpan.textContent = hero.confirmedStats.speed ?? hero.speed; break;
-        case "LUCK": valueSpan.textContent = hero.confirmedStats.luck ?? hero.luck; break;
-        case "Souls": valueSpan.textContent = hero.soul; break;
-      }
-    });
-  }
-
-  function canMove(nx, ny) {
-    return nx >= 0 && nx < map[0].length && ny >= 0 && ny < map.length && map[ny][nx] !== 1;
-  }
-
-  function setHomeState() {
+  function setHomeMap() {
     currentStage = "home";
-    map = generateHomeMap();
-    heroPos = { x: 1, y: 1 };
+    map = window.generateHomeMap();
+    heroPos.x = 1; heroPos.y = 1;
+  }
+
+  function checkHomeInteraction() {
+    const tile = map[heroPos.y][heroPos.x];
+    if (tile === 4) window.showSleepPopup(window.hero, drawMap);
+    else if (tile === 5) window.showPrayerPopup(window.hero);
   }
 
   function checkStageTransition() {
@@ -84,9 +61,10 @@ window.addEventListener("DOMContentLoaded", () => {
     if (currentStage === "home" && tile === 2) {
       currentStage = "dungeon";
       dungeonLayer = 1;
-      const result = generateDungeonMap(dungeonLayer);
+      const result = window.generateDungeonMap(dungeonLayer);
       map = result.map;
-      heroPos = result.heroStart;
+      heroPos.x = result.heroStart.x;
+      heroPos.y = result.heroStart.y;
       drawMap();
       return;
     }
@@ -94,14 +72,15 @@ window.addEventListener("DOMContentLoaded", () => {
     if (currentStage === "dungeon") {
       if (tile === 2) {
         dungeonLayer++;
-        const result = generateDungeonMap(dungeonLayer);
+        const result = window.generateDungeonMap(dungeonLayer);
         map = result.map;
-        heroPos = result.heroStart;
+        heroPos.x = result.heroStart.x;
+        heroPos.y = result.heroStart.y;
         drawMap();
         return;
       }
       if (tile === 3) {
-        showReturnHomePopup(drawMap, setHomeState);
+        window.showReturnHomePopup(window.hero, drawMap, setHomeMap);
       }
     }
   }
@@ -115,14 +94,14 @@ window.addEventListener("DOMContentLoaded", () => {
       case "ArrowLeft": nx--; e.preventDefault(); break;
       case "ArrowRight": nx++; e.preventDefault(); break;
       case "Enter":
-        if (currentStage === "home" && map[heroPos.y][heroPos.x] === 4) import("./ui/popup_sleep.js").then(m=>m.showSleepPopup(drawMap));
+        if (currentStage === "home" && map[heroPos.y][heroPos.x] === 4) window.showSleepPopup(window.hero, drawMap);
         return;
       default: return;
     }
-    if (canMove(nx, ny)) {
+    if (window.canMove(nx, ny, map)) {
       heroPos.x = nx; heroPos.y = ny;
       drawMap();
-      if (currentStage === "home") checkHomeInteraction(heroPos, map, drawMap);
+      if (currentStage === "home") checkHomeInteraction();
       checkStageTransition();
     }
   });

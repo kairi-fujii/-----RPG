@@ -1,29 +1,39 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Roguelike Stage 1</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ダンジョンRPG</title>
+  <link rel="stylesheet" href="css/myStyle.css">
 </head>
 <body>
   <div id="container">
+    <!-- 左側のステータス表示 -->
     <div id="left">
       <h2>Hero</h2>
-      <div class="stat"><span>HP</span><span>10 / 10</span></div>
-      <div class="stat"><span>ATK</span><span>2</span></div>
-      <div class="stat"><span>DEF</span><span>2</span></div>
-      <div class="stat"><span>SPD</span><span>1</span></div>
+      <div class="stat"><span>HP</span><span>0 / 0</span></div>
+      <div class="stat"><span>ATK</span><span>0</span></div>
+      <div class="stat"><span>DEF</span><span>0</span></div>
+      <div class="stat"><span>SPD</span><span>0</span></div>
       <div class="stat"><span>LUCK</span><span>0</span></div>
       <div class="stat"><span>Souls</span><span>0</span></div>
     </div>
 
+    <!-- 右側のキャンバス -->
     <div id="stage-wrap">
-      <canvas id="stage" width="400" height="400"></canvas>
+      <canvas id="stage"></canvas>
     </div>
   </div>
 
+  <!-- 依存順に読み込む -->
   <script src="js/mapgen.js"></script>
-  <script src="js/render.js"></script>
+  <script src="js/hero.js"></script>
+  <script src="js/ui/ui_common.js"></script>
+  <script src="js/ui/popup_prayer.js"></script>
+  <script src="js/ui/popup_sleep.js"></script>
+  <script src="js/ui/popup_return.js"></script>
+  <script src="js/stage/home.js"></script>
+  <script src="js/stage/dungeon.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

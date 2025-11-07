@@ -1,7 +1,4 @@
-// ui/popup_return.js
-import { generateHomeMap } from "../mapgen.js";
-
-export function showReturnHomePopup(drawMap, setHomeState) {
+window.showReturnHomePopup = function(hero, drawMap, setHomeMap) {
   if (document.getElementById("returnPopup")) return;
 
   const popup = document.createElement("div");
@@ -13,17 +10,16 @@ export function showReturnHomePopup(drawMap, setHomeState) {
     border: "2px solid #fff", zIndex: 1000, fontFamily: "monospace"
   });
 
-  popup.innerHTML = `
-    <h3>拠点に帰還しますか？</h3>
+  popup.innerHTML = `<h3>拠点に帰還しますか？</h3>
     <button id="returnConfirm">はい</button>
-    <button id="returnCancel">いいえ</button>
-  `;
+    <button id="returnCancel">いいえ</button>`;
+
   document.body.appendChild(popup);
 
   popup.querySelector("#returnConfirm").onclick = () => {
-    setHomeState();
+    setHomeMap();
     drawMap();
     popup.remove();
   };
   popup.querySelector("#returnCancel").onclick = () => popup.remove();
-}
+};

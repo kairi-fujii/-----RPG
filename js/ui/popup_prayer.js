@@ -1,31 +1,38 @@
-// ui/popup_prayer.js
-import { hero, requiredSoul } from "../hero.js";
-import { createPopupContainer, createStatControl } from "./ui_common.js";
+window.showPrayerPopup = function(hero) {
+  const existing = document.getElementById("prayerPopup");
+  if (existing) existing.remove();
 
-export function showPrayerPopup(drawMap) {
-  const popup = createPopupContainer("prayerPopup");
+  const popup = document.createElement("div");
+  popup.id = "prayerPopup";
+  Object.assign(popup.style, {
+    position: "absolute",
+    left: "50%", top: "50%", transform: "translate(-50%,-50%)",
+    background: "#222", color: "white", padding: "20px",
+    border: "2px solid #fff", zIndex: 1000, fontFamily: "monospace"
+  });
 
   popup.innerHTML = `
     <h3>祈りを捧げる</h3>
     <p>ソウル: ${hero.soul}</p>
-    ${createStatControl("ATK", "atk", "atkLevel", hero)}
-    ${createStatControl("DEF", "def", "defLevel", hero)}
-    ${createStatControl("SPD", "speed", "speedLevel", hero)}
-    ${createStatControl("LUK", "luck", "luckLevel", hero)}
+    ${window.createStatControl(hero, "ATK", "atk", "atkLevel")}
+    ${window.createStatControl(hero, "DEF", "def", "defLevel")}
+    ${window.createStatControl(hero, "SPD", "speed", "speedLevel")}
+    ${window.createStatControl(hero, "LUK", "luck", "luckLevel")}
     <br><button id="closePopup">閉じる</button>
   `;
 
+  document.body.appendChild(popup);
   popup.querySelector("#closePopup").onclick = () => popup.remove();
 
-  ["atk", "def", "speed", "luck"].forEach(stat => {
+  ["atk","def","speed","luck"].forEach(stat => {
     const lvlKey = stat + "Level";
     popup.querySelector(`#${stat}Up`).onclick = () => {
-      const cost = requiredSoul(hero[lvlKey]);
+      const cost = window.requiredSoul(hero[lvlKey]);
       if (hero.soul >= cost) {
         hero[stat]++;
         hero[lvlKey]++;
         hero.soul -= cost;
-        showPrayerPopup(drawMap);
+        window.showPrayerPopup(hero);
       }
     };
     popup.querySelector(`#${stat}Down`).onclick = () => {
@@ -33,9 +40,9 @@ export function showPrayerPopup(drawMap) {
       if (hero[stat] > confirmed) {
         hero[stat]--;
         hero[lvlKey]--;
-        hero.soul += requiredSoul(hero[lvlKey]);
-        showPrayerPopup(drawMap);
+        hero.soul += window.requiredSoul(hero[lvlKey]);
+        window.showPrayerPopup(hero);
       }
     };
   });
-}
+};

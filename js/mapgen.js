@@ -1,5 +1,4 @@
-// mapgen.js
-export function generateHomeMap() {
+window.generateHomeMap = function() {
   const width = 8, height = 6;
   const map = Array.from({ length: height }, () => Array(width).fill(0));
   for (let y = 0; y < height; y++) {
@@ -11,9 +10,9 @@ export function generateHomeMap() {
   map[4][1] = 4; // ベッド
   map[4][6] = 5; // 女神像
   return map;
-}
+};
 
-export function generateDungeonMap(layer) {
+window.generateDungeonMap = function(layer) {
   const size = 32;
   const map = Array.from({ length: size }, () => Array(size).fill(0));
   for (let y = 0; y < size; y++) {
@@ -40,4 +39,4 @@ export function generateDungeonMap(layer) {
   );
   const heroStart = heroStartCandidates[Math.floor(Math.random() * heroStartCandidates.length)];
   return { map, heroStart };
-}
+};
