@@ -4,6 +4,7 @@ const Renderer = {
   bedImg:new Image(), goddessImg:new Image(),
   upStairsImg:new Image(), downStairsImg:new Image(),
   treasureImg:new Image(), soulImg:new Image(),
+  treasureRareImg:new Image(),
 
   loadImages: function(callback){
     this.groundImg.src="assets/Ground.png";
@@ -13,6 +14,7 @@ const Renderer = {
     this.upStairsImg.src="assets/UphillStairs.png";
     this.downStairsImg.src="assets/DownhillStairs.png";
     this.treasureImg.src="assets/TreasureChest.png";
+    this.treasureRareImg.src="assets/TreasureChestRare.png";
     this.soulImg.src="assets/Soul.png";
 
     let loadedCount=0;
@@ -40,7 +42,9 @@ const Renderer = {
         else if(tile===3) ctx.drawImage(this.downStairsImg,px,py,tileSize,tileSize);
         else if(tile===4) ctx.drawImage(this.bedImg,px,py,tileSize,tileSize);
         else if(tile===5) ctx.drawImage(this.goddessImg,px,py,tileSize,tileSize);
-        else if(tile===6) ctx.drawImage(this.treasureImg,px,py,tileSize,tileSize);
+        else if(tile===6) ctx.drawImage(this.treasureImg,px,py,tileSize,tileSize)
+        else if(tile===7) ctx.drawImage(this.treasureRareImg, px, py, tileSize, tileSize);
+
       }
     }
 

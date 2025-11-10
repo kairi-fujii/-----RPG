@@ -58,3 +58,6 @@ const GameManager = {
     return nx>=0 && nx<this.map[0].length && ny>=0 && ny<this.map.length && this.map[ny][nx]!==1;
   }
 };
+
+
+
