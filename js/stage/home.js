@@ -1,10 +1,14 @@
 // stage/home.js
-import { hero } from "../hero.js";
-import { showSleepPopup } from "../ui/popup_sleep.js";
-import { showPrayerPopup } from "../ui/popup_prayer.js";
-
-export function checkHomeInteraction(heroPos, map, drawMap) {
-  const tile = map[heroPos.y][heroPos.x];
-  if (tile === 4) showSleepPopup(drawMap);
-  else if (tile === 5) showPrayerPopup(drawMap);
+function checkHomeInteraction(){
+  const tile = GameManager.map[Hero.pos.y][Hero.pos.x];
+  if(tile===4) showSleepPopup();
+  else if(tile===5) showPrayerPopup();
+  else if(tile===2){
+    // 上り階段がある場合はダンジョンへ移動
+    GameManager.currentStage="dungeon";
+    const result = MapGen.generateDungeonMap(1);
+    GameManager.map = result.map;
+    Hero.pos = result.heroStart;
+    GameManager.drawMap();
+  }
 }

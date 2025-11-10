@@ -8,7 +8,7 @@
 </head>
 <body>
   <div id="container">
-    <!-- 左側のステータス表示 -->
+    <!-- 左側：ステータス表示 -->
     <div id="left">
       <h2>Hero</h2>
       <div class="stat"><span>HP</span><span>0 / 0</span></div>
@@ -19,21 +19,33 @@
       <div class="stat"><span>Souls</span><span>0</span></div>
     </div>
 
-    <!-- 右側のキャンバス -->
+    <!-- 右側：ステージキャンバス -->
     <div id="stage-wrap">
       <canvas id="stage"></canvas>
     </div>
   </div>
 
-  <!-- 依存順に読み込む -->
+  <!-- 依存順にJSを読み込む -->
   <script src="js/mapgen.js"></script>
   <script src="js/hero.js"></script>
+
+  <!-- core -->
+  <script src="js/core/renderer.js"></script>
+  <script src="js/core/event_manager.js"></script>
+  <script src="js/core/game_manager.js"></script>
+  <script src="js/core/input_handler.js"></script>
+
+  <!-- stage -->
+  <script src="js/stage/home.js"></script>
+  <script src="js/stage/dungeon.js"></script>
+
+  <!-- UI -->
   <script src="js/ui/ui_common.js"></script>
   <script src="js/ui/popup_prayer.js"></script>
   <script src="js/ui/popup_sleep.js"></script>
   <script src="js/ui/popup_return.js"></script>
-  <script src="js/stage/home.js"></script>
-  <script src="js/stage/dungeon.js"></script>
+
+  <!-- メイン初期化 -->
   <script src="js/main.js"></script>
 </body>
 </html>
