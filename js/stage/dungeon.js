@@ -5,20 +5,18 @@ function checkDungeonInteraction() {
   const layer = GameManager.dungeonLayer;
 
   if (tile === 3) {
-    // 下り階段：拠点に戻る
     showReturnHomePopup();
   } else if (tile === 2) {
-    // 上り階段：次の階層に進む
-    const result = MapGen.generateDungeonMap(layer + 1);
+    GameManager.dungeonLayer++;
+    const result = MapGen.generateDungeonMap(GameManager.dungeonLayer);
     GameManager.map = result.map;
     window.hero.pos = result.heroStart;
-    GameManager.dungeonLayer = layer + 1;
     GameManager.drawMap();
   } else if (tile === 6 || tile === 7) {
-    // 宝箱取得処理は treasure.js に委譲
-    handleTreasureTile(tile, layer);
+    handleTreasureTile(tile, GameManager.dungeonLayer);
   }
 }
+
 
 // ダンジョンマップ生成
 MapGen.generateDungeonMap = function(layer) {

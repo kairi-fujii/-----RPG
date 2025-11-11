@@ -1,8 +1,8 @@
-// core/game_manager.js
 const GameManager = {
   map: MapGen.generateHomeMap(),
   currentStage: "home",
   canvas: null,
+  dungeonLayer: 1, // 拠点からダンジョンに入ると1階からスタート
 
   init: function(){
     this.canvas = document.getElementById("stage");
@@ -11,8 +11,19 @@ const GameManager = {
   },
 
   drawMap: function(){
+    // 拠点とダンジョンでキャンバスサイズを切り替え
+    if(this.currentStage === "home") {
+      console.log("🏠 拠点モード: キャンバスサイズを調整します");
+    } else if(this.currentStage === "dungeon") {
+      console.log("🏰 ダンジョンモード: キャンバスサイズを調整します");
+      // CSS上のサイズは固定して中央表示
+      this.canvas.style.width = "900px";
+      this.canvas.style.height = "900px";
+    }
+
     Renderer.drawMap(this.canvas, this.map, this.currentStage);
     this.updateStatusDisplay();
+    this.updateStageDisplay(); // 階層表示を更新
   },
 
   updateStatusDisplay: function(){
@@ -29,6 +40,25 @@ const GameManager = {
         case "Souls": valueSpan.textContent=window.hero.souls; break;
       }
     });
+  },
+
+  // 階層表示（拠点→ダンジョン1階から）
+  updateStageDisplay: function(){
+    let stageDiv = document.getElementById("stageDisplay");
+    if(!stageDiv){
+      stageDiv = document.createElement("div");
+      stageDiv.id = "stageDisplay";
+      stageDiv.style.margin = "10px 0";
+      stageDiv.style.fontWeight = "bold";
+      document.getElementById("left").appendChild(stageDiv);
+    }
+
+    if(this.currentStage === "home"){
+      stageDiv.textContent = "拠点"; // 拠点表示
+      this.dungeonLayer = 1; // 拠点からダンジョンに入ると1階スタート
+    } else if(this.currentStage === "dungeon"){
+      stageDiv.textContent = `地下${this.dungeonLayer}階層`; // ダンジョン階層表示
+    }
   },
 
   bindKeys: function(){

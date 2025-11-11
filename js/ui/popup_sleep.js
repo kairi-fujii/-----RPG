@@ -52,4 +52,5 @@ function showSleepPopup() {
 
   // 「いいえ」選択時
   popup.querySelector("#sleepCancel").onclick = () => popup.remove();
+
 }
