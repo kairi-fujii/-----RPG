@@ -1,4 +1,4 @@
-// ui/popup_sleep.js
+// popup_sleep.js
 function showSleepPopup(){
   if(document.getElementById("sleepPopup")) return;
 
@@ -6,8 +6,7 @@ function showSleepPopup(){
   popup.id="sleepPopup";
   Object.assign(popup.style,{
     position:"absolute", left:"50%", top:"50%", transform:"translate(-50%,-50%)",
-    background:"#222", color:"white", padding:"20px",
-    border:"2px solid #fff", zIndex:1000, fontFamily:"monospace"
+    background:"#222", color:"white", padding:"20px", border:"2px solid #fff", zIndex:1000, fontFamily:"monospace"
   });
   popup.innerHTML=`<h3>眠りますか？</h3>
     <button id="sleepConfirm">はい</button>
@@ -15,8 +14,10 @@ function showSleepPopup(){
   document.body.appendChild(popup);
 
   popup.querySelector("#sleepConfirm").onclick=()=>{
-    Hero.hp=Hero.maxHp;
-    ["atk","def","speed","luck"].forEach(s=>Hero.confirmedStats[s]=Hero[s]);
+    window.hero.hp = window.hero.maxHp;
+    ["atk","def","spd","luck"].forEach(stat=>{
+      window.hero.confirmedStats[stat]=window.hero[stat];
+    });
     GameManager.drawMap();
     popup.remove();
   };

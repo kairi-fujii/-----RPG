@@ -1,8 +1,7 @@
-// js/stage/dungeon.js
+// stage/dungeon.js
 
-// ダンジョン内でのタイル判定
 function checkDungeonInteraction() {
-  const tile = GameManager.map[Hero.pos.y][Hero.pos.x];
+  const tile = GameManager.map[window.hero.pos.y][window.hero.pos.x];
   const layer = GameManager.dungeonLayer;
 
   if (tile === 3) {
@@ -12,7 +11,7 @@ function checkDungeonInteraction() {
     // 上り階段：次の階層に進む
     const result = MapGen.generateDungeonMap(layer + 1);
     GameManager.map = result.map;
-    Hero.pos = result.heroStart;
+    window.hero.pos = result.heroStart;
     GameManager.dungeonLayer = layer + 1;
     GameManager.drawMap();
   } else if (tile === 6 || tile === 7) {
