@@ -17,7 +17,7 @@ function showReturnHomePopup(){
   popup.querySelector("#returnConfirm").onclick=()=>{
     GameManager.currentStage="home";
     GameManager.map = MapGen.generateHomeMap();
-    Hero.pos={x:1,y:1};
+    window.hero.pos={x:1,y:1};  // ← 修正
     GameManager.drawMap();
     popup.remove();
   };

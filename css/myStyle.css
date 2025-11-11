@@ -62,3 +62,16 @@ html, body {
     width: 90%;
   }
 }
+
+/* 祈りポップアップのステータス行 */
+.stat-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto; /* ラベル / +ボタン / -ボタン */
+  align-items: center; /* ボタン縦位置中央揃え */
+  gap: 6px; /* 列間隔 */
+  padding: 4px 0;
+}
+
+.stat-label {
+  white-space: nowrap; /* ラベル折り返し防止 */
+}

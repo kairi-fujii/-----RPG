@@ -14,6 +14,9 @@ const GameManager = {
     // 拠点とダンジョンでキャンバスサイズを切り替え
     if(this.currentStage === "home") {
       console.log("🏠 拠点モード: キャンバスサイズを調整します");
+      // CSS上のサイズは固定して中央表示
+      this.canvas.style.width = "512px";
+      this.canvas.style.height = "400px";
     } else if(this.currentStage === "dungeon") {
       console.log("🏰 ダンジョンモード: キャンバスサイズを調整します");
       // CSS上のサイズは固定して中央表示
