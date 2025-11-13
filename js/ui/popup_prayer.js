@@ -64,7 +64,10 @@ function showPrayerPopup() {
 
       // + ボタン押下
       upBtn.onclick = ()=>{
-        const cost = 2*hero[lvlKey]+10;  // 次レベルに必要ソウル
+        // 現在レベルに予約値を加えた表示レベルで次レベルのコストを計算
+        const displayLevel = hero[lvlKey] + hero.prayerReserve[stat];
+        const cost = 2 * displayLevel + 10;  // 次レベルに必要ソウル
+
         if(hero.souls >= cost){
           hero.prayerReserve[stat]++;     // 予約値加算
           hero.souls -= cost;             // ソウル消費
@@ -75,9 +78,11 @@ function showPrayerPopup() {
       // - ボタン押下
       downBtn.onclick = ()=>{
         const confirmed = hero.confirmedStats[stat]; // 下限
-        if(hero[stat]+hero.prayerReserve[stat] > confirmed){
+        if(hero.prayerReserve[stat] > 0 && (hero[stat]+hero.prayerReserve[stat] > confirmed)){
+          // 減少後のレベルで返還ソウル計算
+          const displayLevel = hero[lvlKey] + hero.prayerReserve[stat] - 1;
           hero.prayerReserve[stat]--;         // 予約値減少
-          hero.souls += 2*hero[lvlKey]+10;    // ソウル返還
+          hero.souls += 2*displayLevel + 10;  // ソウル返還
           updatePrayerPopupDisplay();
         }
       };
@@ -110,7 +115,7 @@ function updatePrayerPopupDisplay(){
     const reserveVal = hero.prayerReserve[stat];     // 予約値
     const displayReserve = `+${reserveVal}`;        // 予約値表示（初期から +0）
     const displayLevel = hero[lvlKey]+reserveVal;   // 予約値込みでレベル表示
-    const nextCost = 2*displayLevel+10;             // 次レベルに必要なソウル
+    const nextCost = 2*displayLevel+10;             // 次レベルに必要ソウル
 
     // 表示更新
     labelDiv.textContent = `${stat.toUpperCase()}: ${currentVal} (Lv.${displayLevel}) (${displayReserve})`;
@@ -120,7 +125,7 @@ function updatePrayerPopupDisplay(){
 
 // ==============================================
 // ステータス行生成（初回のみ）
-// グリッド5列: 現在値 / レベル / 予約値 / ボタン / 必要ソウル
+// グリッド5列: 現在値 / +ボタン / -ボタン / 必要ソウル / ラベル
 // ==============================================
 function createStatControl(label,key,lvlKey,reserve){
   const hero = window.hero;

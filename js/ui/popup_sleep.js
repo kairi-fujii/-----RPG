@@ -1,3 +1,4 @@
+// popup_sleep.js
 function showSleepPopup() {
   if(document.getElementById("sleepPopup")) return;
 
@@ -20,11 +21,26 @@ function showSleepPopup() {
   popup.querySelector("#sleepConfirm").onclick = ()=>{
     const hero = window.hero;
 
+    // ==============================================
     // 予約値をステータスに反映
+    // ==============================================
     ["maxHp","atk","def","spd","luck"].forEach(stat=>{
-      hero[stat] += hero.prayerReserve[stat] || 0;
-      hero.confirmedStats[stat] = hero[stat]; // 確定ステータス更新
-      hero.prayerReserve[stat] = 0;          // 予約値リセット
+      // 祈りで予約された値を加算
+      const reserve = hero.prayerReserve[stat] || 0;
+      hero[stat] += reserve;
+
+      // 確定ステータスを更新
+      hero.confirmedStats[stat] = hero[stat];
+
+      // ==============================================
+      // レベルを確定値に更新（眠る前の予約値込みレベルを保存）
+      // 次回の祈りで必要ソウル計算に反映される
+      // ==============================================
+      const lvlKey = stat + "Level";
+      hero[lvlKey] = (hero[lvlKey] || 1) + reserve;
+
+      // 予約値リセット
+      hero.prayerReserve[stat] = 0;
     });
 
     // HP全回復
@@ -33,6 +49,7 @@ function showSleepPopup() {
     // ソウルリセット
     hero.souls = 0;
 
+    // マップ再描画
     GameManager.drawMap();
     popup.remove();
   };
