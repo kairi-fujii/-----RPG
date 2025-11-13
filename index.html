@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ダンジョンRPG</title>
   <link rel="stylesheet" href="css/myStyle.css">
 </head>
+
 <body>
   <div id="container">
-    
+
     <!-- 左側：ステータス表示 -->
     <div id="left">
       <div id="header">
@@ -26,8 +28,9 @@
     </div>
 
     <!-- 右側：ステージキャンバス -->
-    <div id="stage-wrap">
+    <div id="stage-wrap" style="position: relative;">
       <canvas id="stage"></canvas>
+      <canvas id="effectCanvas" style="position: absolute; top: 0; left: 0; pointer-events: none;"></canvas>
     </div>
   </div>
 
@@ -56,4 +59,5 @@
   <!-- メイン初期化 -->
   <script src="js/main.js"></script>
 </body>
+
 </html>

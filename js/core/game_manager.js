@@ -10,24 +10,34 @@ const GameManager = {
     this.bindKeys();
   },
 
-  drawMap: function(){
-    // 拠点とダンジョンでキャンバスサイズを切り替え
+drawMap: function(){
+  // --------------------------------------------
+  // ステージ切替時のみキャンバスサイズを変更
+  // --------------------------------------------
+  if(this.lastStage !== this.currentStage){
     if(this.currentStage === "home") {
       console.log("🏠 拠点モード: キャンバスサイズを調整します");
-      // CSS上のサイズは固定して中央表示
       this.canvas.style.width = "512px";
       this.canvas.style.height = "400px";
     } else if(this.currentStage === "dungeon") {
       console.log("🏰 ダンジョンモード: キャンバスサイズを調整します");
-      // CSS上のサイズは固定して中央表示
       this.canvas.style.width = "900px";
       this.canvas.style.height = "900px";
     }
+    // 最後に描画したステージを記録
+    this.lastStage = this.currentStage;
+  }
 
-    Renderer.drawMap(this.canvas, this.map, this.currentStage);
-    this.updateStatusDisplay();
-    this.updateStageDisplay(); // 階層表示を更新
-  },
+  // マップ描画（キャラクターや地形など）
+  Renderer.drawMap(this.canvas, this.map, this.currentStage);
+
+  // ステータス表示を更新
+  this.updateStatusDisplay();
+
+  // 現在のステージ表示
+  this.updateStageDisplay();
+}
+,
 
   updateStatusDisplay: function(){
     const container = document.getElementById("left");
