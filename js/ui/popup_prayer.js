@@ -34,7 +34,7 @@ function showPrayerPopup() {
     });
 
     // 初回HTML生成（ラベルは仮表示）
-    popup.innerHTML = `<h3>🙏 祈りを捧げる</h3>
+    popup.innerHTML = `<h3>祈りを捧げる</h3>
       <p id="prayerSouls">ソウル: ${hero.souls}</p>
       ${createStatControl("MaxHP","maxHp","maxHpLevel", hero.prayerReserve)}
       ${createStatControl("ATK","atk","atkLevel", hero.prayerReserve)}

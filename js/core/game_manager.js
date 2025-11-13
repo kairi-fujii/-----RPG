@@ -16,11 +16,9 @@ drawMap: function(){
   // --------------------------------------------
   if(this.lastStage !== this.currentStage){
     if(this.currentStage === "home") {
-      console.log("🏠 拠点モード: キャンバスサイズを調整します");
       this.canvas.style.width = "512px";
       this.canvas.style.height = "400px";
     } else if(this.currentStage === "dungeon") {
-      console.log("🏰 ダンジョンモード: キャンバスサイズを調整します");
       this.canvas.style.width = "900px";
       this.canvas.style.height = "900px";
     }

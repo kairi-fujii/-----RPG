@@ -97,8 +97,6 @@ class SoulEffect {
 // ソウルエフェクト呼び出し関数
 // ----------------------------------------------------------
 function showSoulEffect(x, y, gainedSoul, isRare) {
-  console.log("💫 showSoulEffect 呼び出し確認:", x, y, gainedSoul, isRare);
-
   // SoulEffectインスタンスを生成してエフェクト表示
   new SoulEffect(x, y, gainedSoul, isRare);
 }

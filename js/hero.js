@@ -45,7 +45,6 @@ class Hero {
   // ===============================
   recoverFullHp() {
     this.hp = this.maxHp;
-    console.log(`HP全回復: 現在HP=${this.hp}/${this.maxHp}`);
   }
 }
 
@@ -53,4 +52,3 @@ class Hero {
 // グローバル化
 // ===============================
 window.hero = new Hero();
-console.log("✅ Hero initialized:", window.hero);

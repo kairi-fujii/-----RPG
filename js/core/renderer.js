@@ -32,7 +32,6 @@ const Renderer = {
       img.onload = () => {
         loadedCount++;
         // heroImgロード確認用
-        if (img === this.heroImg) console.log("Hero image loaded:", img.complete);
         if (loadedCount === imgs.length) callback();
       };
     });
