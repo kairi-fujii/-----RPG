@@ -57,7 +57,8 @@ class SoulEffect {
     // offsetX: 横方向微調整（正値で右方向、負値で左方向にずらす）
     // offsetY: 縦方向微調整（正値で下方向、負値で上方向にずらす）
     // この値を調整することで、Heroの中心に合わせたり、画面端でのズレを補正可能
-    const offsetX = tileSize * (-11.0); // 現状右方向微調整（負値で右寄せ）
+    const offsetX = tileSize * (-8.0); // 現状右方向微調整（負値で右寄せ）
+    // const offsetX = tileSize * (-11.0); // 現状右方向微調整（負値で右寄せ）
     const offsetY = tileSize * 1.0;     // 少し上にずらす（負にするとさらに上、正にすると下）
 
     // 左上原点からの座標を計算して適用
